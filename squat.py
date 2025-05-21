@@ -9,7 +9,7 @@ mp_pose = mp.solutions.pose
 left_rep_data = {"left_counter": 0, "left_stage": None}
 
 def get_reps():
-    return left_rep_data,right_rep_data
+    return left_rep_data
 
 def calculate_angle(a, b, c):
     a, b, c = np.array(a), np.array(b), np.array(c)
