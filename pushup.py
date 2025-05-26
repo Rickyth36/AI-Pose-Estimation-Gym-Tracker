@@ -7,10 +7,9 @@ mp_pose = mp.solutions.pose
 
 # Global variable to store rep data
 left_rep_data = {"left_counter": 0, "left_stage": None}
-right_rep_data = {"right_counter": 0, "right_stage": None}
 
 def get_reps():
-    return left_rep_data,right_rep_data
+    return left_rep_data
 
 def calculate_angle(a, b, c):
     a, b, c = np.array(a), np.array(b), np.array(c)
@@ -20,12 +19,11 @@ def calculate_angle(a, b, c):
 
 def process_video(cap):
     global left_rep_data    
-    global right_rep_data    
-    left_counter, right_counter = 0, 0
-    left_stage, right_stage = None, None
+    left_counter = 0
+    left_stage = None
 
     with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as pose:
-        while cap.isOpened():            
+        while cap.isOpened():
             ret, frame = cap.read()
             if not ret:
                 break
@@ -35,9 +33,6 @@ def process_video(cap):
             image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
 
             if results.pose_landmarks:
-                # print("Landmarks detected")
-                # print(f"Stage: {left_stage}, Reps: {left_counter}")
-                # print(f"Stage: {right_stage}, Reps: {right_counter}")                
                 landmarks = results.pose_landmarks.landmark
 
                 left_shoulder = [landmarks[mp_pose.PoseLandmark.LEFT_SHOULDER.value].x,
@@ -46,21 +41,22 @@ def process_video(cap):
                               landmarks[mp_pose.PoseLandmark.LEFT_ELBOW.value].y]
                 left_wrist = [landmarks[mp_pose.PoseLandmark.LEFT_WRIST.value].x,
                               landmarks[mp_pose.PoseLandmark.LEFT_WRIST.value].y]
+                left_hip = [landmarks[mp_pose.PoseLandmark.LEFT_HIP.value].x,
+                            landmarks[mp_pose.PoseLandmark.LEFT_HIP.value].y]
+                left_knee = [landmarks[mp_pose.PoseLandmark.LEFT_KNEE.value].x,
+                             landmarks[mp_pose.PoseLandmark.LEFT_KNEE.value].y]
+                left_ankle = [landmarks[mp_pose.PoseLandmark.LEFT_ANKLE.value].x,
+                              landmarks[mp_pose.PoseLandmark.LEFT_ANKLE.value].y]                
+             
 
-                right_shoulder = [landmarks[mp_pose.PoseLandmark.RIGHT_SHOULDER.value].x,
-                                  landmarks[mp_pose.PoseLandmark.RIGHT_SHOULDER.value].y]
-                right_elbow = [landmarks[mp_pose.PoseLandmark.RIGHT_ELBOW.value].x,
-                               landmarks[mp_pose.PoseLandmark.RIGHT_ELBOW.value].y]
-                right_wrist = [landmarks[mp_pose.PoseLandmark.RIGHT_WRIST.value].x,
-                               landmarks[mp_pose.PoseLandmark.RIGHT_WRIST.value].y]
+                left_elbow_angle = calculate_angle(left_shoulder, left_elbow, left_wrist)
+                left_knee_angle = calculate_angle(left_hip, left_knee, left_ankle)
 
-                left_angle = calculate_angle(left_shoulder, left_elbow, left_wrist)
-                right_angle = calculate_angle(right_shoulder, right_elbow, right_wrist)
 
-                if left_angle > 160:
-                    left_stage = "Down"
-                if left_angle < 40 and left_stage == "Down":
+                if left_elbow_angle > 160  and left_knee_angle >=170 :
                     left_stage = "Up"
+                if left_elbow_angle <= 90  and left_stage == "Up" and left_knee_angle >=170 :
+                    left_stage = "Down"
                     left_counter += 1
 
                 # Update global rep data
@@ -68,20 +64,6 @@ def process_video(cap):
                 left_rep_data["left_stage"] = left_stage
 
 
-                if right_angle > 160:
-                    right_stage = "Down"
-                if right_angle < 40 and right_stage == "Down":
-                    right_stage = "Up"
-                    right_counter += 1
-
-                # Update global rep data
-                right_rep_data["right_counter"] = right_counter
-                right_rep_data["right_stage"] = right_stage
-
-                # cv2.putText(image, f'Left: {left_counter}', (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
-                # cv2.putText(image, f'Right: {right_counter}', (400, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
-
-                # mp_drawing.draw_landmarks(image, results.pose_landmarks, mp_pose.POSE_CONNECTIONS)
                 mp_drawing.draw_landmarks(image, results.pose_landmarks,mp_pose.POSE_CONNECTIONS,
                                     mp_drawing.DrawingSpec(color=(247,117,66), thickness=2 , circle_radius=2),
                                     mp_drawing.DrawingSpec(color=(247,66,230), thickness=2 , circle_radius=2)

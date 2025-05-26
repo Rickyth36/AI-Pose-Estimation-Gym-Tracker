@@ -2,9 +2,14 @@ import cv2
 import mediapipe as mp
 import numpy as np
 from playsound import playsound
+import threading
+import time
 
 mp_drawing = mp.solutions.drawing_utils
 mp_pose = mp.solutions.pose
+
+sound_playing = False
+last_sound_time = 0         
 
 # Global variable to store rep data
 left_rep_data = {"left_counter": 0, "left_stage": None}
@@ -12,6 +17,27 @@ right_rep_data = {"right_counter": 0, "right_stage": None}
 
 def get_reps():
     return left_rep_data,right_rep_data
+
+def play_wrong_sound():
+    global sound_playing, last_sound_time
+
+    if sound_playing:
+        return
+
+    now = time.time()
+    if now - last_sound_time < 2:  # Cooldown of 2 seconds
+        return
+
+    sound_playing = True
+    last_sound_time = now
+
+    try:
+        playsound(r"C:\Users\HOME\Documents\PythonProject\AI-Pose-Estimation-Gym-Tracker\static\wrong.mp3")
+    finally:
+        sound_playing = False
+
+# def play_wrong_sound():
+#     playsound(r"C:\Users\HOME\Documents\PythonProject\AI-Pose-Estimation-Gym-Tracker\static\wrong.mp3")
 
 def calculate_angle(a,b,c):
     a = np.array(a) #First point
@@ -68,10 +94,10 @@ def process_video(cap):
                             tuple(np.multiply(left_elbow,[640,480]).astype(int)),
                             cv2.FONT_HERSHEY_SIMPLEX, 0.5,(255,255,255),2, cv2.LINE_AA)
                 # Curl left_counter logic
-                if left_angle <30:
-                    left_stage = "down"
-                if left_angle <=90 and left_angle>80 and left_stage=="down":
-                    left_stage ="up"
+                if left_angle >=90 :
+                    left_stage = "up"
+                if left_angle <30 and left_stage=="up":
+                    left_stage ="down"
                     left_counter += 1
             
                 left_rep_data["left_counter"] = left_counter
@@ -91,13 +117,19 @@ def process_video(cap):
                             tuple(np.multiply(right_elbow,[640,480]).astype(int)),
                             cv2.FONT_HERSHEY_SIMPLEX, 0.5,(255,255,255),2, cv2.LINE_AA)
                 # Curl right_counter logic
-                if right_angle <30:
-                    right_stage = "down"
-                if right_angle <=90 and right_angle>80 and right_stage=="down":
+                if  right_angle>=90 :
                     right_stage ="up"
+                if right_angle <30 and right_stage=="up":
+                    right_stage = "down"
                     right_counter += 1
                 right_rep_data["right_counter"] = right_counter
-                right_rep_data["right_stage"] = right_stage                
+                right_rep_data["right_stage"] = right_stage    
+
+                if((right_angle > 130 or left_angle > 130) ):  
+                    threading.Thread(target=play_wrong_sound, daemon=True).start() 
+                    # play_wrong_sound()             
+                        
+
 
             except:
                 pass
@@ -140,4 +172,3 @@ def process_video(cap):
             frame = buffer.tobytes()
             yield (b'--frame\r\n'
                 b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
-        

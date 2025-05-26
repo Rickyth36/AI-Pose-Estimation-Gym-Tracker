@@ -5,7 +5,7 @@ function changeExercise() {
     const singleRepContainer = document.querySelector('.single-rep-container');
     const doubleRepContainer = document.querySelector('.double-rep-container');
 
-    if (selectedExercise === 'squat') {
+    if (selectedExercise === 'squat' || selectedExercise === 'pushup') {
         singleRepContainer.style.display = 'block';
         doubleRepContainer.style.display = 'none';
     } else {
@@ -28,9 +28,11 @@ function updateReps() {
         .then(data => {
             leftData = data[0];
             rightData = data[1];
-            // document.getElementById('rep-count').textContent = data.left_counter;
+            console.log(data);
+            document.getElementById('rep-count').textContent = data.left_counter;
             document.getElementById('left-rep-count').textContent = leftData.left_counter;
             document.getElementById('right-rep-count').textContent = rightData.right_counter;
+            document.getElementById('stage').textContent = leftData.left_stage || '-';
             document.getElementById('left-stage').textContent = leftData.left_stage || '-';
             document.getElementById('right-stage').textContent = rightData.right_stage || '-';
             document.getElementById('rep-display').innerText =

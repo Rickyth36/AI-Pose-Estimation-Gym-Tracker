@@ -65,14 +65,14 @@ button {
   gap: 6rem;
   justify-content: space-around;
   align-items: center;
-  margin-top:2rem;
+  margin-top:1rem;
 }
 .single-rep-container{
   display: none;
   gap: 6rem;
   justify-content: center;
   align-items: center;
-  margin-top:2rem;
+  margin-top:1rem;
 }
 p{
     margin: 0;    
