@@ -47,7 +47,7 @@ def process_video(cap):
 
                 # Calculate angle
                 left_knee_angle = calculate_angle(left_hip, left_knee, left_ankle)
-
+                print(left_knee_angle)
                 # Squat counter logic
                 if left_knee_angle < 135:
                     left_stage = "Down"
@@ -61,13 +61,6 @@ def process_video(cap):
                 cv2.putText(image, str(int(left_knee_angle)),
                             tuple(np.multiply(left_knee, [640, 480]).astype(int)),
                             cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA)
-
-                # cv2.rectangle(image, (0, 0), (250, 75), (245, 117, 16), -1)
-                # cv2.putText(image, 'REPS', (15, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1, cv2.LINE_AA)
-                # cv2.putText(image, str(left_counter), (10, 70), cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 255, 255), 2, cv2.LINE_AA)
-                # cv2.putText(image, 'STAGE', (85, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1, cv2.LINE_AA)
-                # cv2.putText(image, left_stage if left_stage else '-', (80, 70),
-                #             cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 255, 255), 2, cv2.LINE_AA)
 
             except:
                 pass

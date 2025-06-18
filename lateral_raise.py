@@ -32,12 +32,12 @@ def play_wrong_sound():
     last_sound_time = now
 
     try:
-        playsound(r"C:\Users\HOME\Documents\PythonProject\AI-Pose-Estimation-Gym-Tracker\static\wrong.mp3")
+        playsound("/Users/rickythoudam/Documents/AI-Pose-Estimation-Gym-Tracker/static/wrong.mp3")
+
+
     finally:
         sound_playing = False
 
-# def play_wrong_sound():
-#     playsound(r"C:\Users\HOME\Documents\PythonProject\AI-Pose-Estimation-Gym-Tracker\static\wrong.mp3")
 
 def calculate_angle(a,b,c):
     a = np.array(a) #First point
@@ -94,7 +94,7 @@ def process_video(cap):
                             tuple(np.multiply(left_elbow,[640,480]).astype(int)),
                             cv2.FONT_HERSHEY_SIMPLEX, 0.5,(255,255,255),2, cv2.LINE_AA)
                 # Curl left_counter logic
-                if left_angle >=90 :
+                if left_angle >=100 :
                     left_stage = "up"
                 if left_angle <30 and left_stage=="up":
                     left_stage ="down"
@@ -117,7 +117,7 @@ def process_video(cap):
                             tuple(np.multiply(right_elbow,[640,480]).astype(int)),
                             cv2.FONT_HERSHEY_SIMPLEX, 0.5,(255,255,255),2, cv2.LINE_AA)
                 # Curl right_counter logic
-                if  right_angle>=90 :
+                if  right_angle>=100 :
                     right_stage ="up"
                 if right_angle <30 and right_stage=="up":
                     right_stage = "down"
@@ -127,41 +127,13 @@ def process_video(cap):
 
                 if((right_angle > 130 or left_angle > 130) ):  
                     threading.Thread(target=play_wrong_sound, daemon=True).start() 
-                    # play_wrong_sound()             
+                    play_wrong_sound()             
                         
 
 
             except:
                 pass
 
-            # Render curl left_counter
-            # Setup status box
-
-            # cv2.rectangle(image,(0,0),(255,73),(245,177,16),-1)
-
-            # Repdata
-            # cv2.putText(image,'REPS',(15,20),cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,0,0),1,cv2.LINE_AA)
-            # cv2.putText(image,str(left_counter),(10,70),cv2.FONT_HERSHEY_SIMPLEX,2,(255,255,255),2,cv2.LINE_AA)
-
-            # # Stagedata
-            # cv2.putText(image,'STAGE',(85,20),cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,0,0),1,cv2.LINE_AA)
-            # cv2.putText(image,left_stage,(80,70),cv2.FONT_HERSHEY_SIMPLEX,2,(255,255,255),2,cv2.LINE_AA)
-
-            
-            # Render curl right_counter
-            # Setup status box
-
-            # cv2.rectangle(image,(400,0),(655,73),(245,177,16),-1)
-
-            # Repdataq
-            # cv2.putText(image,'REPS',(410,20),cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,0,0),1,cv2.LINE_AA)
-            # cv2.putText(image,str(right_counter),(410,70),cv2.FONT_HERSHEY_SIMPLEX,2,(255,255,255),2,cv2.LINE_AA)
-
-            # Stagedata 
-            # cv2.putText(image,'STAGE',(490,20),cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,0,0),1,cv2.LINE_AA)
-            # cv2.putText(image,right_stage,(480,70),cv2.FONT_HERSHEY_SIMPLEX,2,(255,255,255),2,cv2.LINE_AA)
-
-            
             mp_drawing.draw_landmarks(image, results.pose_landmarks,mp_pose.POSE_CONNECTIONS,
                                     mp_drawing.DrawingSpec(color=(247,117,66), thickness=2 , circle_radius=2),
                                     mp_drawing.DrawingSpec(color=(247,66,230), thickness=2 , circle_radius=2)

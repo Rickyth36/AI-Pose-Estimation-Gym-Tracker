@@ -29,14 +29,14 @@ function updateReps() {
             leftData = data[0];
             rightData = data[1];
             console.log(data);
-            document.getElementById('rep-count').textContent = data.left_counter;
+            document.getElementById('rep-count').textContent = leftData.left_counter;
             document.getElementById('left-rep-count').textContent = leftData.left_counter;
             document.getElementById('right-rep-count').textContent = rightData.right_counter;
             document.getElementById('stage').textContent = leftData.left_stage || '-';
             document.getElementById('left-stage').textContent = leftData.left_stage || '-';
             document.getElementById('right-stage').textContent = rightData.right_stage || '-';
             document.getElementById('rep-display').innerText =
-                `Reps: ${data.left_counter}, Stage: ${data.stage || '-'}`;                    
+                `Reps: ${leftData.left_counter}, Stage: ${leftData.left_stage || '-'}`;                    
         });
 }
 

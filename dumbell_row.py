@@ -19,8 +19,8 @@ def calculate_angle(a, b, c):
     return 360 - angle if angle > 180 else angle
 
 def process_video(cap):
-    global left_rep_data      
-    global right_rep_data     
+    global left_rep_data    
+    global right_rep_data    
     left_counter, right_counter = 0, 0
     left_stage, right_stage = None, None
 
@@ -56,7 +56,7 @@ def process_video(cap):
 
                 if left_angle > 160:
                     left_stage = "Down"
-                if left_angle < 30 and left_stage == "Down":
+                if left_angle < 90 and left_stage == "Down":
                     left_stage = "Up"
                     left_counter += 1
 
@@ -67,7 +67,7 @@ def process_video(cap):
 
                 if right_angle > 160:
                     right_stage = "Down"
-                if right_angle < 30 and right_stage == "Down":
+                if right_angle < 90 and right_stage == "Down":
                     right_stage = "Up"
                     right_counter += 1
 
@@ -75,6 +75,10 @@ def process_video(cap):
                 right_rep_data["right_counter"] = right_counter
                 right_rep_data["right_stage"] = right_stage
 
+                # cv2.putText(image, f'Left: {left_counter}', (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+                # cv2.putText(image, f'Right: {right_counter}', (400, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+
+                # mp_drawing.draw_landmarks(image, results.pose_landmarks, mp_pose.POSE_CONNECTIONS)
                 mp_drawing.draw_landmarks(image, results.pose_landmarks,mp_pose.POSE_CONNECTIONS,
                                     mp_drawing.DrawingSpec(color=(247,117,66), thickness=2 , circle_radius=2),
                                     mp_drawing.DrawingSpec(color=(247,66,230), thickness=2 , circle_radius=2)

@@ -53,11 +53,14 @@ def process_video(cap):
                 left_knee_angle = calculate_angle(left_hip, left_knee, left_ankle)
 
 
-                if left_elbow_angle > 160  and left_knee_angle >=170 :
+                if left_elbow_angle > 120 :
                     left_stage = "Up"
-                if left_elbow_angle <= 90  and left_stage == "Up" and left_knee_angle >=170 :
+                    print(left_stage)
+                    print(left_elbow_angle)
+                if left_elbow_angle <= 110  and left_stage == "Up":
                     left_stage = "Down"
                     left_counter += 1
+                    print(left_stage)
 
                 # Update global rep data
                 left_rep_data["left_counter"] = left_counter
