@@ -1,6 +1,7 @@
 import cv2
 import mediapipe as mp
 import numpy as np
+import share_state
 
 mp_drawing = mp.solutions.drawing_utils
 mp_pose = mp.solutions.pose
@@ -33,44 +34,38 @@ def process_video(cap):
             image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
 
             if results.pose_landmarks:
-                landmarks = results.pose_landmarks.landmark
+                if share_state.tracking_enabled:                
+                    landmarks = results.pose_landmarks.landmark
 
-                left_shoulder = [landmarks[mp_pose.PoseLandmark.LEFT_SHOULDER.value].x,
-                                 landmarks[mp_pose.PoseLandmark.LEFT_SHOULDER.value].y]
-                left_elbow = [landmarks[mp_pose.PoseLandmark.LEFT_ELBOW.value].x,
-                              landmarks[mp_pose.PoseLandmark.LEFT_ELBOW.value].y]
-                left_wrist = [landmarks[mp_pose.PoseLandmark.LEFT_WRIST.value].x,
-                              landmarks[mp_pose.PoseLandmark.LEFT_WRIST.value].y]
-                left_hip = [landmarks[mp_pose.PoseLandmark.LEFT_HIP.value].x,
-                            landmarks[mp_pose.PoseLandmark.LEFT_HIP.value].y]
-                left_knee = [landmarks[mp_pose.PoseLandmark.LEFT_KNEE.value].x,
-                             landmarks[mp_pose.PoseLandmark.LEFT_KNEE.value].y]
-                left_ankle = [landmarks[mp_pose.PoseLandmark.LEFT_ANKLE.value].x,
-                              landmarks[mp_pose.PoseLandmark.LEFT_ANKLE.value].y]                
-             
+                    shoulder = [landmarks[mp_pose.PoseLandmark.LEFT_SHOULDER.value].x,
+                                    landmarks[mp_pose.PoseLandmark.LEFT_SHOULDER.value].y]
+                    elbow = [landmarks[mp_pose.PoseLandmark.LEFT_ELBOW.value].x,
+                                landmarks[mp_pose.PoseLandmark.LEFT_ELBOW.value].y]
+                    wrist = [landmarks[mp_pose.PoseLandmark.LEFT_WRIST.value].x,
+                                landmarks[mp_pose.PoseLandmark.LEFT_WRIST.value].y]
+                    hip = [landmarks[mp_pose.PoseLandmark.LEFT_HIP.value].x,
+                                landmarks[mp_pose.PoseLandmark.LEFT_HIP.value].y]
+                    knee = [landmarks[mp_pose.PoseLandmark.LEFT_KNEE.value].x,
+                                landmarks[mp_pose.PoseLandmark.LEFT_KNEE.value].y]                    
 
-                left_elbow_angle = calculate_angle(left_shoulder, left_elbow, left_wrist)
-                left_knee_angle = calculate_angle(left_hip, left_knee, left_ankle)
+                    elbow_angle = calculate_angle(shoulder, elbow, wrist)
+                    torso_angle = calculate_angle(shoulder, hip, knee)                    
 
 
-                if left_elbow_angle > 120 :
-                    left_stage = "Up"
-                    print(left_stage)
-                    print(left_elbow_angle)
-                if left_elbow_angle <= 110  and left_stage == "Up":
-                    left_stage = "Down"
-                    left_counter += 1
-                    print(left_stage)
+                    if elbow_angle < 90 and torso_angle > 160 :
+                        left_stage = "Down"
+                    if elbow_angle > 160  and left_stage == "Down":
+                        left_stage = "Up"
+                        left_counter += 1
 
-                # Update global rep data
-                left_rep_data["left_counter"] = left_counter
-                left_rep_data["left_stage"] = left_stage
+                    left_rep_data["left_counter"] = left_counter
+                    left_rep_data["left_stage"] = left_stage
 
 
-                mp_drawing.draw_landmarks(image, results.pose_landmarks,mp_pose.POSE_CONNECTIONS,
-                                    mp_drawing.DrawingSpec(color=(247,117,66), thickness=2 , circle_radius=2),
-                                    mp_drawing.DrawingSpec(color=(247,66,230), thickness=2 , circle_radius=2)
-                                    )                
+                    mp_drawing.draw_landmarks(image, results.pose_landmarks,mp_pose.POSE_CONNECTIONS,
+                                        mp_drawing.DrawingSpec(color=(247,117,66), thickness=7 , circle_radius=3),
+                                        mp_drawing.DrawingSpec(color=(247,66,230), thickness=7 , circle_radius=3)
+                                        )                
 
             _, buffer = cv2.imencode('.jpg', image)
             frame = buffer.tobytes()

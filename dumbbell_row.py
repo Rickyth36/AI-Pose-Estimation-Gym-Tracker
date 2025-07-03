@@ -10,7 +10,6 @@ mp_pose = mp.solutions.pose
 left_rep_data = {"left_counter": 0, "left_stage": None}
 right_rep_data = {"right_counter": 0, "right_stage": None}
 
-
 def get_reps():
     return left_rep_data,right_rep_data
 
@@ -21,8 +20,8 @@ def calculate_angle(a, b, c):
     return 360 - angle if angle > 180 else angle
 
 def process_video(cap):
-    global left_rep_data      
-    global right_rep_data   
+    global left_rep_data    
+    global right_rep_data    
     left_counter, right_counter = 0, 0
     left_stage, right_stage = None, None
 
@@ -46,6 +45,10 @@ def process_video(cap):
                                 landmarks[mp_pose.PoseLandmark.LEFT_ELBOW.value].y]
                     left_wrist = [landmarks[mp_pose.PoseLandmark.LEFT_WRIST.value].x,
                                 landmarks[mp_pose.PoseLandmark.LEFT_WRIST.value].y]
+                    left_hip = [landmarks[mp_pose.PoseLandmark.LEFT_HIP.value].x,
+                                landmarks[mp_pose.PoseLandmark.LEFT_HIP.value].y]
+                    left_knee = [landmarks[mp_pose.PoseLandmark.LEFT_KNEE.value].x,
+                                landmarks[mp_pose.PoseLandmark.LEFT_KNEE.value].y]
 
                     right_shoulder = [landmarks[mp_pose.PoseLandmark.RIGHT_SHOULDER.value].x,
                                     landmarks[mp_pose.PoseLandmark.RIGHT_SHOULDER.value].y]
@@ -53,13 +56,23 @@ def process_video(cap):
                                 landmarks[mp_pose.PoseLandmark.RIGHT_ELBOW.value].y]
                     right_wrist = [landmarks[mp_pose.PoseLandmark.RIGHT_WRIST.value].x,
                                 landmarks[mp_pose.PoseLandmark.RIGHT_WRIST.value].y]
+                    right_hip = [landmarks[mp_pose.PoseLandmark.RIGHT_HIP.value].x,
+                                landmarks[mp_pose.PoseLandmark.RIGHT_HIP.value].y]
+                    right_knee = [landmarks[mp_pose.PoseLandmark.RIGHT_KNEE.value].x,
+                                landmarks[mp_pose.PoseLandmark.RIGHT_KNEE.value].y]                    
 
-                    left_angle = calculate_angle(left_shoulder, left_elbow, left_wrist)
-                    right_angle = calculate_angle(right_shoulder, right_elbow, right_wrist)
+                    left_elbow_angle = calculate_angle(left_shoulder, left_elbow, left_wrist)
+                    right_elbow_angle = calculate_angle(right_shoulder, right_elbow, right_wrist)
 
-                    if left_angle > 160:
+                    left_torso_angle = calculate_angle(left_shoulder, left_hip, left_knee)
+                    right_torso_angle = calculate_angle(right_shoulder, right_hip, right_knee)
+
+                    average_torso_angle = (left_torso_angle + right_torso_angle) / 2
+
+
+                    if left_elbow_angle > 160 and 120 < average_torso_angle < 150:
                         left_stage = "Down"
-                    if left_angle < 30 and left_stage == "Down":
+                    if left_elbow_angle < 90 and left_stage == "Down":
                         left_stage = "Up"
                         left_counter += 1
 
@@ -67,21 +80,20 @@ def process_video(cap):
                     left_rep_data["left_stage"] = left_stage
 
 
-                    if right_angle > 160:
+                    if right_elbow_angle > 160 and 120 < average_torso_angle < 150:
                         right_stage = "Down"
-                    if right_angle < 30 and right_stage == "Down":
+                    if right_elbow_angle < 90 and right_stage == "Down":
                         right_stage = "Up"
                         right_counter += 1
 
                     right_rep_data["right_counter"] = right_counter
                     right_rep_data["right_stage"] = right_stage
 
-
                     mp_drawing.draw_landmarks(image, results.pose_landmarks,mp_pose.POSE_CONNECTIONS,
                                         mp_drawing.DrawingSpec(color=(247,117,66), thickness=7 , circle_radius=3),
                                         mp_drawing.DrawingSpec(color=(247,66,230), thickness=7 , circle_radius=3)
                                         )                
-    
+
             _, buffer = cv2.imencode('.jpg', image)
             frame = buffer.tobytes()
             yield (b'--frame\r\n'

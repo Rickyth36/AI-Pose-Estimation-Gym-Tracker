@@ -1,6 +1,7 @@
 from flask import Flask, render_template, Response,jsonify, request
 import cv2
 import importlib
+import share_state
 
 app = Flask(__name__)
 
@@ -33,6 +34,19 @@ def get_reps():
     exercise_module = importlib.import_module(selected_exercise)
     return jsonify(exercise_module.get_reps())
 
+tracking_enabled = False  # Global toggle
+
+@app.route('/start_tracking', methods=['POST'])
+def start_tracking():
+    share_state.tracking_enabled = True
+    return '', 204
+
+@app.route('/stop_tracking', methods=['POST'])
+def stop_tracking():
+    share_state.tracking_enabled = False
+    return '', 204
+
 if __name__ == "__main__":
     # app.run(debug=True)
     app.run(host='0.0.0.0', port=8080, debug=True)
+ 

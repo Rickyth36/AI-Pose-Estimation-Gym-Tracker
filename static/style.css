@@ -1,34 +1,146 @@
 @import url('https://fonts.googleapis.com/css2?family=Sora&display=swap');
 
-body 
-{
-    text-align: center;
-    background-color: rgb(33, 33, 33);
-    color: white;    
-    font-family: 'Sora', sans-serif;
-}
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      text-align: center;
+      background: rgb(18, 18, 18);
+      font-family: 'Sora', sans-serif;
+      color: rgb(217, 217, 217);
+    }
+
+    #toggleBtn {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      z-index: 10;
+      padding: 8px 12px;
+      color: white;
+      background: #202020;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .circle1{
+      position: absolute;
+      top: -10%;
+      left: -15%;
+      z-index: -1;
+      width: 500px;
+      height: 500px;
+      background: linear-gradient(to right, #73ffc2, #a3acff,#e16aff);
+      border: none;
+      opacity: 0.4;
+      border-radius: 50%; 
+      filter: blur(150px);      
+    }
+    .circle2{
+      position: absolute;
+      bottom: 10%;
+      right: 3%;
+      z-index: -1;
+      width: 300px;
+      height: 300px;
+      background: linear-gradient(to right,#73ffc2,#3544cb);
+      border: none;
+      opacity: 0.4;
+      border-radius: 50%; 
+      filter: blur(150px);      
+    }
+
+    #sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 250px;
+      height: 100%;
+      background-color: #333;
+      overflow-x: auto;
+      white-space: nowrap;
+      padding: 10px;
+      padding-top: 4rem;      
+      transform: translateX(0);
+      transition: transform 0.3s ease;
+      will-change: transform;
+      z-index: 2;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(12px); 
+      -webkit-backdrop-filter: blur(12px); 
+      border-right: 1px solid rgba(255, 255, 255, 0.2);   
+      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2); 
+      border-radius: 0 12px 12px 0;    
+    }
+
+    #sidebar.hidden {
+      transform: translateX(-100%);
+    }
+
+    .sidebar-item {
+      display: block;
+      padding: 10px;
+      margin-bottom: 10px;
+      color: white;
+      text-align: center;
+
+      background: rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(2px); 
+      -webkit-backdrop-filter: blur(2px); 
+      border-right: 1px solid rgba(255, 255, 255, 0.2);   
+      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2); 
+      border-radius: 12px;
+      cursor: pointer;
+    }
+
+    #main {
+      position: relative;
+      min-height: 100vh;
+      padding: 20px;
+      margin-left: 250px; 
+      transition: margin-left 0.3s ease;
+    }
+
+    #main.full {
+      margin-left: 0;
+    }
+
+    @media (max-width: 768px) {
+      #sidebar {
+        width: 70%;
+        max-width: 280px;
+      }
+
+      #main {
+        margin-left: 0;
+      }
+    }
+
+
+
+
+
+
+    
 .heading{
-  font-size: 5rem;
+  font-size: 3rem;
   font-weight: bold;
 }
 .sub-heading{
-  font-size: 2rem;
+  font-size: 1.5rem;
 }
 
 .info{
   font-size: 1.5rem;
 }
 
-.exercise-select-container{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .wrapper{
   display: flex;
-  justify-content: center; /* center the container horizontally */
+  justify-content: center; 
   margin-top: 20px;  
+  
 }
 label{
   font-weight: 500;
@@ -36,10 +148,10 @@ label{
 }
 #video-container {
     display: inline-block;
-    padding: 1.5rem;
-    background-color: #303030;
+    padding: 1.3rem;
+    background-color: #202020;
     border-radius: 1rem;  
-    width: 60%;  
+    width: 65%;  
     border: 1px solid rgb(101, 101, 101);
 }
 
@@ -51,7 +163,7 @@ label{
 }
 #exercise-select {
     padding: 10px;
-    font-size: 16px;
+    font-size: 4rem;
 }
 
 button {
@@ -59,6 +171,22 @@ button {
     font-size: 16px;
     margin: 10px;
     cursor: pointer;
+}
+.actionBtn{
+  border-radius: 12px;
+  width: 87px;
+  display: block;
+  padding:12px;
+  margin: 1rem;
+  cursor: pointer;
+}
+#startBtn{
+  background: #60d394;
+  color: #121212;
+}
+#stopBtn{
+  background: #ff7d76;
+  color: white;
 }
 .double-rep-container{
   display: flex;
@@ -81,8 +209,6 @@ p{
 
 .gradient-text {
   display: inline-block; 
-  /* background: linear-gradient(to right, #D16BA5, #86A8E7,#5FFBF1); */
-  /* background: linear-gradient(to right, #ff6a00, #ee0979); */
   background: linear-gradient(to right, #6d6d6d, #ffffff);
   background-clip: text;
   -webkit-background-clip: text;
@@ -94,9 +220,6 @@ p{
 }
 .color-gradient-text {
   display: block; 
-  /* background: linear-gradient(to right, #D16BA5, #86A8E7,#5FFBF1); */
-  /* background: linear-gradient(to right, #ff9966, #ff5e62); */
-    /* background: linear-gradient(to right, #ff6a00, #ee0979); */
     background: linear-gradient(to right, #73ffc2, #a3acff,#e16aff);
   background-clip: text;
   -webkit-background-clip: text;
@@ -106,60 +229,15 @@ p{
   background-position: center;
   background-repeat: no-repeat;
 }
+.color-gradient-bg {
+    background: linear-gradient(to right, #f6fefe, #a3acff);
+    color: rgb(33, 33, 33);    
 
-
-/* glow button */
-.btn-donate {
-  --clr-font-main: hsla(0 0% 20% / 100);
-  --btn-bg-1: hsla(194 100% 69% / 1);
-  --btn-bg-2: hsla(217 100% 56% / 1);
-  --btn-bg-color: hsla(360 100% 100% / 1);
-  --radii: 0.5em;
-  cursor: pointer;
-  padding: 0.9em 1.4em;
-  min-width: 120px;
-  min-height: 44px;
-  font-size: var(--size, 1rem);
-  font-weight: 500;
-  transition: 0.8s;
-  background-size: 280% auto;
-  background-image: linear-gradient(
-    325deg,
-    var(--btn-bg-2) 0%,
-    var(--btn-bg-1) 55%,
-    var(--btn-bg-2) 90%
-  );
-  border: none;
-  border-radius: var(--radii);
-  color: var(--btn-bg-color);
-  box-shadow:
-    0px 0px 20px rgba(71, 184, 255, 0.5),
-    0px 5px 5px -1px rgba(58, 125, 233, 0.25),
-    inset 4px 4px 8px rgba(175, 230, 255, 0.5),
-    inset -4px -4px 8px rgba(19, 95, 216, 0.35);
-}
-
-.btn-donate:hover {
-  background-position: right top;
-}
-
-.btn-donate:is(:focus, :focus-visible, :active) {
-  outline: none;
-  box-shadow:
-    0 0 0 3px var(--btn-bg-color),
-    0 0 0 6px var(--btn-bg-2);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .btn-donate {
-    transition: linear;
   }
-}
 
 .dropdown{
   background-color: #333333;
   color: white;
-  /* width: 10rem; */
   border-radius: 0.5rem;
   padding: 0.9em 1.4em;
 }
@@ -186,15 +264,8 @@ label{
 #video-container {
     padding: 1rem;
 }
-.exercise-select-container{
-  flex-direction: column;
-  gap: 3px;
-  margin-top: 12px;
-}
+
 .dropdown{
-  width: 100%;
-}
-.btn-donate{
   width: 100%;
 }
 }

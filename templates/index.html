@@ -7,23 +7,29 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+  <button id="toggleBtn">☰</button>
+  <div class="circle1"></div>
+  <div class="circle2"></div>
+  <div id="sidebar" class="hidden">
+    <div class="sidebar-item" exercise="bicep_curl">Bicep Curl</div>
+    <div class="sidebar-item" exercise="lateral_raise">Lateral Raise</div>
+    <div class="sidebar-item" exercise="shoulder_press">Shoulder Press</div>
+    <div class="sidebar-item" exercise="dumbbell_row">Dumbbell Row</div>
+    <div class="sidebar-item" exercise="squat">Squat</div>
+    <div class="sidebar-item" exercise="pushup">Push Up</div>
+    <div style="display: flex; position: absolute; bottom: 0;">
+        <div class="actionBtn" id="startBtn">Start</div>
+        <div class="actionBtn" id="stopBtn">Stop</div>
+    </div>
+  </div>
 
-    <p class="color-gradient-text heading">Biomimic</p>
+  <div id="main" class="full">
+    <p class="color-gradient-text heading">BioMimic</p>
     <p class="gradient-text sub-heading">AI Pose Estimation Gym Tracker</p>
     <div style="margin-top: 1rem;">
-        <label for="exercise-select">Select Exercise:</label>
-        <div class="exercise-select-container">
-            <select class="dropdown" id="exercise-select">
-                <option value="bicep_curl">Bicep Curl</option>
-                <option value="squat">Squat</option>
-                <option value="lateral_raise">Lateral Raise</option>
-                <option value="shoulder_press">Shoulder Press</option>
-                <option value="pushup">Push Up</option>
-                <option value="dumbell_row">Dumbell Row</option>
-            </select>
-            <button class="btn-donate" onclick="changeExercise()">Start</button>
-        </div>
+        <p id="exercise-select">Select Exercise:</p>
     </div>
+    
     <div>
         <div class="single-rep-container">
             <div>
@@ -42,12 +48,13 @@
             </div>
         </div>
     </div>    
-
     <div class="wrapper">
         <div id="video-container">
             <img id="video-feed" src="{{ url_for('video_feed') }}">
         </div>
     </div>
+  </div>
+
 
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 
