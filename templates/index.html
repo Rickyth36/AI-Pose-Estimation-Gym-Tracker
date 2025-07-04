@@ -27,7 +27,18 @@
     <p class="color-gradient-text heading">BioMimic</p>
     <p class="gradient-text sub-heading">AI Pose Estimation Gym Tracker</p>
     <div style="margin-top: 1rem;">
-        <p id="exercise-select">Select Exercise:</p>
+        <label for="exercise-select">Select Exercise:</label>
+        <div class="exercise-select-container">
+            <select class="dropdown" id="exercise-select">
+                <option value="bicep_curl">Bicep Curl</option>
+                <option value="squat">Squat</option>
+                <option value="lateral_raise">Lateral Raise</option>
+                <option value="shoulder_press">Shoulder Press</option>
+                <option value="pushup">Push Up</option>
+                <option value="dumbell_row">Dumbell Row</option>
+            </select>
+            <button class="btn-donate" onclick="changeExercise()">Start</button>
+        </div>
     </div>
     
     <div>
