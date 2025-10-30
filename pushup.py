@@ -2,15 +2,39 @@ import cv2
 import mediapipe as mp
 import numpy as np
 import share_state
+from playsound import playsound
+import threading
+import time
 
 mp_drawing = mp.solutions.drawing_utils
 mp_pose = mp.solutions.pose
+
+sound_playing = False
+last_sound_time = 0  
 
 # Global variable to store rep data
 left_rep_data = {"left_counter": 0, "left_stage": None}
 
 def get_reps():
     return left_rep_data
+
+def play_wrong_sound():
+    global sound_playing, last_sound_time
+
+    if sound_playing:
+        return
+
+    now = time.time()
+    if now - last_sound_time < 2:  # Cooldown of 2 seconds
+        return
+
+    sound_playing = True
+    last_sound_time = now
+
+    try:
+        playsound("static/wrong.mp3")
+    finally:
+        sound_playing = False
 
 def calculate_angle(a, b, c):
     a, b, c = np.array(a), np.array(b), np.array(c)
@@ -61,6 +85,23 @@ def process_video(cap):
                     left_rep_data["left_counter"] = left_counter
                     left_rep_data["left_stage"] = left_stage
 
+                    if torso_angle < 150:
+                        threading.Thread(target=play_wrong_sound,daemon=True).start()
+                        text = "keep your body straight."
+                        font = cv2.FONT_HERSHEY_COMPLEX
+                        font_scale = 2
+                        thickness = 4
+                        (text_width, _), _ = cv2.getTextSize(text, font, font_scale, thickness)
+                        _, image_width, _ = image.shape
+                        x = (image_width - text_width) // 2
+                        y = 140  
+                        cv2.putText(image, text, (x, y), font, font_scale, (0, 0, 255), thickness, cv2.LINE_AA)                                
+                            
+
+                    mp_drawing.draw_landmarks(image, results.pose_landmarks,mp_pose.POSE_CONNECTIONS,
+                                            mp_drawing.DrawingSpec(color=(247,117,66), thickness=7 , circle_radius=3),
+                                            mp_drawing.DrawingSpec(color=(247,66,230), thickness=7 , circle_radius=3)
+                                            )
 
                     mp_drawing.draw_landmarks(image, results.pose_landmarks,mp_pose.POSE_CONNECTIONS,
                                         mp_drawing.DrawingSpec(color=(247,117,66), thickness=7 , circle_radius=3),

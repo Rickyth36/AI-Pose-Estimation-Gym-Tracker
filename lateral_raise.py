@@ -74,7 +74,7 @@ def process_video(cap):
 
             if results.pose_landmarks:
                 if share_state.tracking_enabled:            
-                    landmarks = results.pose_landmarks.landmark
+                    landmarks = results.pose_landmarks.landmark     
                        
 
                     left_elbow = [landmarks[mp_pose.PoseLandmark.LEFT_ELBOW.value].x,landmarks[mp_pose.PoseLandmark.LEFT_ELBOW.value].y ]
@@ -87,7 +87,7 @@ def process_video(cap):
                         left_stage = "up"
                     if left_angle <30 and left_stage=="up":
                         left_stage ="down"
-                        left_counter += 1
+                        left_counter += 1 
                 
                     left_rep_data["left_counter"] = left_counter
                     left_rep_data["left_stage"] = left_stage            
