@@ -202,15 +202,28 @@ Once you have cloned the repository and installed dependencies, running BioMimic
    ```bash
    cd AI-Pose-Estimation-Gym-Tracker
    ```
+### Install Dependencies
+   ```bash
+   pip install -r requirements.txt
+   ```
+   If you are on macOS/Linux and pip points to Python 2, use pip3 instead: 
+   ```bash
+   pip3 install -r requirements.txt
+   ```
 
-   ### Launch the Application
+ ### Launch the Application
    Run the following command in your terminal:
    ```bash
    python app.py
    ```
-
-Thank you for checking out **BioMimic**!  
+   Or, if python points to Python 2, use:
+   ```bash
+   python3 app.py
+   ```
+---
+##Thank you for checking out **BioMimic**!  
 We hope this project helps you **train smarter, track your progress, and maintain proper posture** during workouts.  
 Enjoy exploring the AI-powered features and have fun improving your fitness journey! 💪
+---
 
 
