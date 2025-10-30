@@ -37,7 +37,7 @@ Built using **Python, OpenCV and MediaPipe**, this project brings computer visio
 | Computer Vision | OpenCV |
 | Pose Detection | MediaPipe |
 | Math Operations | NumPy |
-| Audio Feedback | playsound / pygame |
+| Audio Feedback | playsound |
 | Web UI | Flask |
 
 ---
@@ -114,16 +114,19 @@ This project recommends **Python version 3.10.0** and **pip 25.1.1 or later**.
 4. **Upgrade pip (if necessary)**  
    ```bash
    python3 -m pip install --upgrade pip
-5.**Troubleshooting**
+5. **Troubleshooting**
 
-  Add Python to PATH if required:
-  
-  export PATH="/Library/Frameworks/Python.framework/Versions/3.10/bin:$PATH"
-  
-  
-  Install Xcode Command Line Tools if needed:
-  
-  xcode-select --install 
+     Add Python to PATH if required:
+   
+     ```bash
+     export PATH="/Library/Frameworks/Python.framework/Versions/3.10/bin:$PATH"
+     ```
+     
+     
+     Install Xcode Command Line Tools if needed:
+     ```bash
+     xcode-select --install
+     ```
 
 
 ### 🐧 Linux Python Installation (v3.10.0)
@@ -142,66 +145,72 @@ This project recommends **Python version 3.10.0** and **pip 25.1.1 or later**.
    sudo apt install -y build-essential libssl-dev zlib1g-dev \
    libncurses5-dev libncursesw5-dev libreadline-dev libsqlite3-dev \
    libgdbm-dev libdb5.3-dev libbz2-dev libexpat1-dev liblzma-dev tk-dev
-Red Hat / Fedora-based systems:
-
-bash
- 
-sudo dnf groupinstall "Development Tools"
-sudo dnf install -y gcc openssl-devel bzip2-devel libffi-devel zlib-devel \
-readline-devel sqlite-devel wget make
-Extract and Compile Python
-
-bash
- 
-cd /Downloads
-tar -xvf Python-3.10.0.tgz
-cd Python-3.10.0
-./configure --enable-optimizations
-make -j$(nproc)
-sudo make altinstall
-Verify Installation
-
-bash
- 
-python3.10 --version
-# Expected Output: Python 3.10.0
-
-pip3 --version
-# Expected Output: pip 25.1.1 or later
-Upgrade pip (if necessary)
-
-bash
- 
-python3.10 -m pip install --upgrade pip
-Troubleshooting
-
-If python3.10 is not found, ensure /usr/local/bin is in your PATH:
-
-bash
- 
-export PATH="/usr/local/bin:$PATH"
-Add this line to your shell configuration file (~/.zshrc or ~/.bash_profile)
-
-Optional: Create symbolic links for easier access (Debian/Ubuntu):
-
-bash
-
-sudo ln -s /usr/local/bin/python3.10 /usr/bin/python3.10
-sudo ln -s /usr/local/bin/pip3.10 /usr/bin/pip3.10
+   ```
+   Red Hat / Fedora-based systems:
+   ```bash
+   sudo dnf groupinstall "Development Tools"
+   sudo dnf install -y gcc openssl-devel bzip2-devel libffi-devel zlib-devel \
+   readline-devel sqlite-devel wget make
+   ```
+   
+   Extract and Compile Python
+   ```bash
+    
+   cd /Downloads
+   tar -xvf Python-3.10.0.tgz
+   cd Python-3.10.0
+   ./configure --enable-optimizations
+   make -j$(nproc)
+   sudo make altinstall
+   Verify Installation
+   ```
+   
+   ```bash
+   python3.10 --version
+   # Expected Output: Python 3.10.0
+   
+   pip3 --version
+   # Expected Output: pip 25.1.1 or later
+   Upgrade pip (if necessary)
+   ```
+   
+   ```bash
+   python3.10 -m pip install --upgrade pip
+   ```
+   
+   Troubleshooting
+   
+   If python3.10 is not found, ensure /usr/local/bin is in your PATH:
+   
+   ```bash
+   export PATH="/usr/local/bin:$PATH"
+   Add this line to your shell configuration file (~/.zshrc or ~/.bash_profile)
+   ```
+   
+   Optional: Create symbolic links for easier access (Debian/Ubuntu):
+   ```bash
+   sudo ln -s /usr/local/bin/python3.10 /usr/bin/python3.10
+   sudo ln -s /usr/local/bin/pip3.10 /usr/bin/pip3.10
+   ```
 
 ## 🏃 Running BioMimic
 
 Once you have cloned the repository and installed dependencies, running BioMimic is simple:
 
 ### Navigate to the Project Directory
-Open a terminal or command prompt and go to the folder where you cloned the repo:
+   Open a terminal or command prompt and go to the folder where you cloned the repo:
+   ```bash
+   cd AI-Pose-Estimation-Gym-Tracker
+   ```
 
-```bash
-cd AI-Pose-Estimation-Gym-Tracker
-### Launch the Application
+   ### Launch the Application
+   Run the following command in your terminal:
+   ```bash
+   python app.py
+   ```
 
-Run the following command in your terminal:
+Thank you for checking out **BioMimic**!  
+We hope this project helps you **train smarter, track your progress, and maintain proper posture** during workouts.  
+Enjoy exploring the AI-powered features and have fun improving your fitness journey! 💪
 
-```bash
-python app.py
 
