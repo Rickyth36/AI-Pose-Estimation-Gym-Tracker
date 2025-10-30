@@ -221,7 +221,7 @@ Once you have cloned the repository and installed dependencies, running BioMimic
    python3 app.py
    ```
 ---
-##Thank you for checking out **BioMimic**!  
+Thank you for checking out **BioMimic**!  
 We hope this project helps you **train smarter, track your progress, and maintain proper posture** during workouts.  
 Enjoy exploring the AI-powered features and have fun improving your fitness journey! 💪
 ---
